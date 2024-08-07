@@ -3,19 +3,41 @@ import { ZodTypeProvider } from 'fastify-type-provider-zod';
 import { z } from 'zod';
 import { prisma } from '../../lib/prisma';
 import { ClientError } from '../../errors/client-error';
+import {
+  createLinkBodySchema,
+  createLinkParamsSchema,
+  createLinkResponseSchema,
+  CreateLinkSchemaRequestBodyType,
+  CreateLinkSchemaRequestParamsType
+} from '../../schemas/links';
+import { createLinkBodyExample } from '../../schemas/examples.ts/links';
 
-export async function createLink(app: FastifyInstance) {
-  app.withTypeProvider<ZodTypeProvider>().post(
+export async function createLink(app: FastifyInstance, done: () => void) {
+  app.withTypeProvider<ZodTypeProvider>().post<{
+    Body: CreateLinkSchemaRequestBodyType;
+    Params: CreateLinkSchemaRequestParamsType;
+  }>(
     '/trips/:trip_id/link/create',
     {
       schema: {
-        params: z.object({
-          trip_id: z.string().uuid()
-        }),
-        body: z.object({
-          title: z.string().min(4),
-          url: z.string().url()
-        })
+        description: 'Create a new important link on trip',
+        tags: ['links'],
+        params: {
+          type: 'object',
+          properties: createLinkParamsSchema.shape
+        },
+        body: {
+          type: 'object',
+          properties: createLinkBodySchema.shape,
+          example: createLinkBodyExample
+        },
+        response: {
+          200: {
+            description: 'Successful response',
+            type: 'object',
+            properties: createLinkResponseSchema.shape
+          }
+        }
       }
     },
     async (request) => {
@@ -39,7 +61,7 @@ export async function createLink(app: FastifyInstance) {
           trip_id: trip_id
         }
       });
-
+      done()
       return { link_id: link.id };
     }
   );

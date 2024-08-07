@@ -5,10 +5,10 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
 import nodemailer from 'nodemailer';
-import { ClientError } from '../../errors/client-error';
-import { getMailClient } from '../../lib/mailer';
 import { prisma } from '../../lib/prisma';
+import { ClientError } from '../../errors/client-error';
 import { env } from '../../env';
+import { getMailClient } from '../../lib/mailer';
 
 dayjs.locale('pt-br');
 dayjs.extend(localizedFormat);

@@ -3,15 +3,32 @@ import { ZodTypeProvider } from 'fastify-type-provider-zod';
 import { z } from 'zod';
 import { ClientError } from '../../errors/client-error';
 import { prisma } from '../../lib/prisma';
+import {
+  getTripDetailsParamsSchema,
+  GetTripRequestType,
+  tripSchema
+} from '../../schemas/trip';
+import { getTripResponseExample } from '../../schemas/examples.ts/trip';
 
 export async function getTripDetails(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().get(
     '/trips/:trip_id',
     {
       schema: {
-        params: z.object({
-          trip_id: z.string().uuid()
-        })
+        params: {
+          type: 'object',
+          properties: getTripDetailsParamsSchema.shape,
+          tags: ['trips'],
+          required: ['trip_id']
+        },
+        response: {
+          200: {
+            description: 'Successful response',
+            type: 'object',
+            content: tripSchema.shape,
+            example: getTripResponseExample
+          }
+        }
       }
     },
     async (request) => {

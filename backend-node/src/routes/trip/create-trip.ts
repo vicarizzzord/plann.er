@@ -7,20 +7,43 @@ import { ClientError } from '../../errors/client-error';
 import { getMailClient } from '../../lib/mailer';
 import { prisma } from '../../lib/prisma';
 import { env } from '../../env';
+import {
+  CreateTripRequestType,
+  createTripResponseSchema,
+  createTripSchema
+} from '../../schemas/trip';
+import { createTripRequestSchema } from '../../schemas/examples.ts/trip';
 
 export async function createTrip(app: FastifyInstance) {
-  app.withTypeProvider<ZodTypeProvider>().post(
+  app.withTypeProvider<ZodTypeProvider>().post<{ Body: CreateTripRequestType }>(
     '/trips',
     {
       schema: {
-        body: z.object({
-          destination: z.string().min(4),
-          starts_at: z.coerce.date(),
-          ends_at: z.coerce.date(),
-          owner_name: z.string(),
-          owner_email: z.string(),
-          emails_to_invite: z.array(z.string().email())
-        })
+        description:
+          'Creates a new trip and sends confirmation emails to the participants.',
+        tags: ['trips'],
+        body: {
+          type: 'object',
+          properties: createTripSchema.shape,
+          required: [
+            'destination',
+            'starts_at',
+            'ends_at',
+            'owner_name',
+            'owner_email'
+          ],
+          example: createTripRequestSchema
+        },
+        response: {
+          200: {
+            description: 'Successful response',
+            type: 'object',
+            properties: createTripResponseSchema.shape,
+            example: {
+              tripId: '123e4567-e89b-12d3-a456-426614174000'
+            }
+          }
+        }
       }
     },
     async (request) => {

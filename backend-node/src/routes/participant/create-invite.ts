@@ -38,7 +38,7 @@ export async function createInvite(app: FastifyInstance) {
         return new ClientError('Trip not found');
       }
 
-      const newParticipants = await prisma.participants.createMany({
+      await prisma.participants.createMany({
         data: emailsToInvite.map((email) => {
           return { email, trip_id };
         })

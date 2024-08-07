@@ -37,11 +37,6 @@ export const ActivitiesList = ({ handleCreateActivityModal }: ActivitiesListProp
             listActivities(trip_id)
     }
 
-    useEffect(() => {
-        if (trip_id)
-            listActivities(trip_id)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
 
     return (
         <div className="space-y-8 min-h-80">

@@ -40,14 +40,7 @@ export const TripDetailsProvider = ({ children }: { children: ReactNode }) => {
     const [activities, setActivities] = useState<Activities[]>([])
     const [activitiesIsLoading, setActivitiesIsLoading] = useState(false)
 
-    const getTrip = async (tripId: string) => {
-        setTripIsLoading(true)
-        const { data } = await api.get(
-            `/trips/${tripId}`
-        )
-        setTrip(data.trip)
-        setTripIsLoading(false)
-    }
+
 
     const isAllLoading = () => {
         return guestIsLoading && guestsIsLoading && activitiesIsLoading && linksIsLoading && tripIsLoading
@@ -78,6 +71,7 @@ export const TripDetailsProvider = ({ children }: { children: ReactNode }) => {
         setLinks(data.links);
         setLinksIsLoading(false);
     }
+    
     const listActivities = async (tripId: string) => {
         setActivitiesIsLoading(true)
         const { data } = await api.get(
@@ -85,6 +79,21 @@ export const TripDetailsProvider = ({ children }: { children: ReactNode }) => {
         )
         setActivities(data.activities);
         setActivitiesIsLoading(false);
+    }
+
+    const getTrip = async (tripId: string) => {
+        setTripIsLoading(true)
+        const { data } = await api.get(
+            `/trips/${tripId}`
+        )
+        const activitiesList = await api.get(
+            `/trips/${tripId}/activities`
+        )
+        setActivities(activitiesList.data.activities)
+        setTrip(data.trip)
+        setLinks(data.trip.links)
+        setGuest(data.trip.participants)
+        setTripIsLoading(false)
     }
 
     return (

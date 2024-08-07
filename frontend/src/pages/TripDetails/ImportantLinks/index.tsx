@@ -2,7 +2,7 @@ import { CircleXIcon, Link2, Plus } from "lucide-react";
 import { Button } from "../../../components/Button";
 import { useParams } from "react-router-dom";
 import { useTrip } from "../../../hooks/useContext/useTripDetails";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Loading } from "../../../components/Loading";
 import { AddLinkModal } from "./AddLinkModal";
 import { api } from "../../../lib/axios";
@@ -37,11 +37,6 @@ export const ImportantLinks = () => {
 
     }
 
-    useEffect(() => {
-        if (trip_id)
-            listLinks(trip_id)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [trip_id])
 
     return (
         <div className="space-y-6">

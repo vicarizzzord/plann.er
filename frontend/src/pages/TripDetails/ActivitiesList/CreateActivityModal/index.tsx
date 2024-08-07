@@ -30,7 +30,6 @@ export const CreateActivityModal = ({ onClose, isOpen }: CreateActivityModalProp
             title,
             occurs_at
         })
-        console.log(title, occurs_at)
 
         if (trip_id)
             listActivities(trip_id)

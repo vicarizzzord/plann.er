@@ -3,9 +3,9 @@ import { DateRange } from 'react-day-picker'
 import { useNavigate } from 'react-router-dom'
 import { api } from '../../lib/axios'
 import { ConfirmTripCreationModal } from './ConfirmTripCreationModal'
-import { InviteGuestsModal } from '../../components/InviteGuestsModal'
 import { DestinationAndDateStep } from './steps/DestinationAndDateStep'
 import { InviteGuestsStep } from './steps/InviteGuestsStep'
+import { InviteGuestsModal } from '../../components/InviteGuestsModal'
 
 
 

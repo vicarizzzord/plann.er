@@ -1,9 +1,10 @@
 import { LinkIcon, CaseSensitive } from "lucide-react"
 import { FormEvent } from "react";
-import { useNavigate, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { DialogBase } from "../../../../components/Dialog";
 import { api } from "../../../../lib/axios";
 import { Button } from "../../../../components/Button";
+import { useTrip } from "../../../../hooks/useContext/useTripDetails";
 
 interface AddLinkModalProps {
     isOpen: boolean,
@@ -12,7 +13,7 @@ interface AddLinkModalProps {
 
 export const AddLinkModal = ({ isOpen, onClose }: AddLinkModalProps) => {
     const { trip_id } = useParams();
-    const navigate = useNavigate()
+    const { listLinks } = useTrip()
 
 
     const addLink = async (event: FormEvent<HTMLFormElement>) => {
@@ -27,9 +28,9 @@ export const AddLinkModal = ({ isOpen, onClose }: AddLinkModalProps) => {
             title: title,
             url: url
         })
+        if (trip_id)
+            listLinks(trip_id)
         onClose()
-        navigate(`/trips/${trip_id}`)
-
     }
     return (
         <DialogBase isOpen={isOpen} onClose={onClose} title="Adicionar novo link">

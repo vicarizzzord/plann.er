@@ -1,13 +1,13 @@
 import { CheckCircle2, CircleDashed, UserMinus2Icon, UserPlusIcon } from "lucide-react"
 import { Button } from "../../../components/Button"
-import { FormEvent, useEffect, useState } from "react"
+import { FormEvent, useState } from "react"
 import { useTrip } from "../../../hooks/useContext/useTripDetails"
 import { useParams } from "react-router-dom"
 import { Loading } from "../../../components/Loading"
-import { InviteGuestsModal } from "../../../components/InviteGuestsModal"
 import { Guest } from "../../../@types/guest"
 import { api } from "../../../lib/axios"
 import { ConfirmParticipantRemotionPopUp } from "./ConfirmParticipantRemotionPopUp"
+import { InviteGuestsModal } from "../../../components/InviteGuestsModal"
 
 
 export const Guests = () => {
@@ -69,14 +69,6 @@ export const Guests = () => {
         handleGuestModal()
     }
 
-
-
-
-    useEffect(() => {
-        if (trip_id)
-            listGuests(trip_id);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
 
     return (
         <div className="space-y-6">
